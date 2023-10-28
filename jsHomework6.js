@@ -16,7 +16,7 @@ blendArr(arr);
 /*
 const company = {
     name: 'Велика Компанія',
-    type: 'Головна компанія',
+    type:'Головна компанія',
     platform: 'Платформа для продажу квитків',
     sellsSolution: 'Рішення для продажу квитків',
     clients: [
@@ -43,18 +43,6 @@ const company = {
                             type: 'subSubCompany',
                             uses: 'Рішення для продажу квитків',
                             sells: 'Рішення для продажу квитків',
-                        },
-                        {
-                            name: 'Клієнт 1.2.4',
-                            type: 'subSubCompany',
-                            uses: 'Рішення для продажу квитків',
-                            sells: 'Рішення для продажу квитків',
-                        },
-                        {
-                            name: 'Клієнт 1.2.5',
-                            type: 'subSubCompany',
-                            uses: 'Рішення для продажу квитків',
-                            sells: 'Рішення для продажу квитків',
                         }
                     ]
                 }
@@ -65,63 +53,30 @@ const company = {
             type: 'subCompany',
             uses: 'ПО для продажу квитків',
             sells: 'Рішення для продажу квитків'
-        },
-        {
-            name: 'Клієнт 3',
-            type: 'subCompany',
-            uses: 'ПО для продажу квитків',
-            sells: 'Рішення для продажу квитків'
         }
     ]
 };
-function findValueKey(companyName) {
-    let mainCompanyInfo;
-    if (companyName === company.name) {
-        for (let key in company) {
-            if (key !== `clients`) {
-                mainCompanyInfo = key + ` : ` + company[key] + ` , `
-                console.log(mainCompanyInfo)
+
+function renderCompanies(obj,companyName) {
+    let item;
+    for (let key in obj) {
+         item = obj[key];
+         if(Array.isArray(item)) {
+             for (let clue in item) {
+                 (function (){
+                         renderCompanies(item[clue],companyName)
+                 })()
+             }
+         }
+    }
+    if(companyName===obj.name) {
+        for(let element in obj){
+            if(element!==`partners`&&element!==`clients`)   {
+                console.log(element + ` : ` +obj[element]);
             }
         }
     }
-    company.clients.forEach((client) => {
-        if (companyName === client.name) {
-                for (let key in client) {
-                    if (key !== `partners`) {
-                        let subCompanyInfo = key + ` : ` + client[key] + ` , `
-                        console.log(subCompanyInfo)
-                    }
-                }
-            }
-        if (client.partners !== undefined) {
-                client.partners.forEach(partner => {
-                    if (companyName === partner.name) {
-                        for (let key in partner) {
-                            if (key !== `partners`) {
-                                let subSubCompanyInfo = key + ` : ` + partner[key] + ` , `
-                                console.log(subSubCompanyInfo)
-                            }
-                        }
-
-                    }
-                    if (partner.partners !== undefined) {
-                        partner.partners.forEach((subPartner) => {
-                                if (companyName === subPartner.name) {
-                                    for (let key in subPartner) {
-                                        if (key !== `partners`) {
-                                            let subSubSubCompanyInfo = key + ` : ` + subPartner[key] + ` , `
-                                            console.log(subSubSubCompanyInfo)
-                                        }
-                                    }
-                                }
-                            }
-                        )
-                    }
-                })
-            }
-
-        })
 
 }
 
-findValueKey("Велика Компанія") */
+renderCompanies(company,'Клієнт 1.1') */
